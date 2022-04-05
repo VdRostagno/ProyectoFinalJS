@@ -3,6 +3,8 @@ console.dir(document);
 console.dir(document.head);
 console.dir(document.body);
 
+const container = document.getElementsByClassName("container");
+
 //promesas del carrito de compras 
 const itemsProductos = document.getElementById("items");
 
@@ -32,6 +34,9 @@ const productosConsultora = ["Generacion de presupuesto", "Hosting y dominio", "
 for (let i = 0; i < 7; i++) {
     (productosConsultora[i])
   }
+  const arrayDesdeStorage = JSON.parse(localStorage.getItem("arrayProducto"));
+
+container.innerHTML = arrayDesdeStorage;
 
   //Class de productos 
 class Productos {
@@ -43,19 +48,17 @@ class Productos {
   } 
 
   //Aplicacion de fetch y ajax
-  fetch('https://jsonplaceholder.typicode.com/posts')
-  .then( (resp) => resp.json() )
-  .then( (data) => {
-    data.forEach((post) => {
-      const li = document.createElement('div')
-      li.innerHTML = `
-          <h1>${post.title}</h1>
-          <p>${post.body}</p>
-      `
-      lista.append(div)
-  })
 
-  })
+  function cargarCarrito (){
+    (fetch('productos.json')
+    .then (respuesta => respuesta.json() )
+    .then (respuesta => {
+      respuesta.forEach(respuesta=>{console.log(respuesta);
+      });
+    })
+    )}
+
+  cargarCarrito()
 
   //Comienzo de const carrito de compras
 const addTocarritoComprasButtons = document.querySelectorAll('.addToCart');
@@ -214,58 +217,4 @@ borrarButton.addEventListener('click', () =>{
       }
   })
 })
-
-
-//Formulario de contacto
-// VARIABLES STORAGE
-let nombreStorage = localStorage.getItem('nombreUsuario');
-let apellidoStorage = localStorage.getItem('apellidoUsuario');
-let celularStorage = localStorage.getItem('celularUsuario');
-let apellidoSessionStorage = sessionStorage.getItem("apellidoSession");
-
-// VARIABLES SESSION
-let valorNombre = sessionStorage.getItem('valorNombre');
-let valorApellido = sessionStorage.getItem('valorApellido');
-let valorcelular = sessionStorage.getItem('valorcelular');
-
-// VARIABLES DOM
-const formulario = document.getElementById("formulario");
-const contFormulario = document.getElementById("contFormulario");
-const saludoUsuario = document.getElementById("saludoUsuario");
-const nombre = document.getElementById("nombre");
-const apellido = document.getElementById("apellido");
-const celular = document.getElementById("celular");
-
-
-formulario.addEventListener("submit", (e) => {
-    e.preventDefault();
-    localStorage.setItem('nombreUsuario', formulario.children[0].value);
-    localStorage.setItem('apellidoUsuario', formulario.children[1].value);
-    localStorage.setItem('celularUsuario', formulario.children[2].value);
-    nombreStorage = formulario.children[0].value;
-    verificarFormulario();
-});
-
-const verificarFormulario = () => {
-    console.log(nombreStorage);
-    if (nombreStorage && nombreStorage !== 'null') {
-        console.log("La información ya existe");
-        contFormulario.remove();
-        saludoUsuario.innerHTML = `Hola ${nombreStorage} a la brevedad se estara comunicando con usted uno de nuestros representantes`;
-    } else {
-        console.log("La información no existe");
-    }
-}
-
-const completarInformacion = () => {
-    nombre.value = valorNombre;
-    apellido.value = valorApellido;
-    celular.value = valorcelular;
-}
-
-// CODIGO
-verificarFormulario();
-completarInformacion();
-
-
 
